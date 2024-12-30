@@ -27,33 +27,17 @@
 
     convertButton.addEventListener("click", () => {
         const binaryValue = binaryInput.value;
-        
-        if (!binaryValue) {
-            errorMessage.innerText = "Please enter a binary number";
-            return;
-        }
-
-        if (binaryValue.length > 53) {
-            errorMessage.innerText = "Input too long, may exceed calculation range";
-            return;
-        }
-
-        let decimal = 0n;
-        try {
-            for (let i = 0; i < binaryValue.length; i++) {
-                if (binaryValue[i] !== '0' && binaryValue[i] !== '1') {
-                    errorMessage.innerText = "Please enter a valid binary number (only 0 and 1)";
-                    return;
-                }
-                decimal = decimal * 2n + BigInt(parseInt(binaryValue[i]));
+        let res = 0
+        for (let i = 0; i < binaryValue.length; i++) {
+            if (binaryValue[i] !== '0' && binaryValue[i] !== '1') {
+                errorMessage.innerText = "Please enter a valid binary number";
+                return;
             }
-            
-            resultValue.innerText = decimal.toString();
-            errorMessage.innerText = "";
-        } catch (e) {
-            errorMessage.innerText = "计算错误，请检查输入";
+            res = res * 2 + parseInt(binaryValue[i])
         }
-    });
+        resultValue.innerText = res;
+        errorMessage.innerText = "";
+    })
 
     // const binaryArray = binaryValue.split("").reverse();
     //   for (let i = 0; i < binaryArray.length; i++) {
