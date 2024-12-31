@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <style>
+    .box {
+      width: 200px;
+      height: 200px;
+      background-color: #000;
+      margin-bottom: 10px;
+    }
+
+    .title {
+      font-size: 20px;
+      font-weight: 600;
+      font-family: Arial;
+    }
+
+    .input-label {
+      font-size: 16px;
+      font-weight: 400;
+      font-family: Arial;
+      width: 100px;
+    }
+
+    .input-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    #radiusShowText {
+      width: 200px;
+      height: auto;
+      min-height: 20px;
+      border: 1px solid #000;
+      margin-bottom: 10px;
+      padding: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <p class="title">Border-radius Previewer</p>
+  <div class="box"></div>
+  <div>
+    <p id="radiusShowText"></p>
+    <button id="copyButton">copy</button>
+  </div>
+  <div class="input-container">
+    <div class="input-group">
+      <label for="top-left" class="input-label">Top Left: </label>
+      <input type="number" id="top-left" placeholder="Top Left" value="0" />
+      <span>px</span>
+    </div>
+    <div class="input-group">
+      <label for="top-right" class="input-label">Top Right: </label>
+      <input type="number" id="top-right" placeholder="Top Right" value="0" />
+      <span>px</span>
+    </div>
+    <div class="input-group">
+      <label for="bottom-left" class="input-label">Bottom Left: </label>
+      <input type="number" id="bottom-left" placeholder="Bottom Left" value="0" />
+      <span>px</span>
+    </div>
+    <div class="input-group">
+      <label for="bottom-right" class="input-label">Bottom Right: </label>
+      <input type="number" id="bottom-right" placeholder="Bottom Right" value="0" />
+      <span>px</span>
+    </div>
+
+    <script>
+      const box = document.querySelector(".box");
+      const radiusShowText = document.getElementById("radiusShowText");
+      const copyButton = document.getElementById("copyButton");
+      const topLeft = document.getElementById("top-left");
+      const topRight = document.getElementById("top-right");
+      const bottomLeft = document.getElementById("bottom-left");
+      const bottomRight = document.getElementById("bottom-right");
+
+      // 因为你的 script 标签在 body 后面，所以可以直接初始化
+      radiusShowText.textContent = `border-radius: ${topLeft.value}px ${topRight.value}px ${bottomLeft.value}px ${bottomRight.value}px;`;
+
+      function updateBorderRadius(element, value) {
+        if (!/^\d*$/.test(value)) {
+          element.value = 0;
+        }
+        console.log(element.id);
+        const property = `border${element.id.split('-').map(word => 
+          word.charAt(0).toUpperCase() + word.slice(1)).join('')}Radius`;
+        box.style[property] = `${element.value}px`;
+        updateRadiusText();
+      }
+
+      function updateRadiusText() {
+        radiusShowText.textContent = `border-radius: ${topLeft.value}px ${topRight.value}px ${bottomLeft.value}px ${bottomRight.value}px;`;
+      }
+
+      [topLeft, topRight, bottomLeft, bottomRight].forEach(input => {
+        input.addEventListener('input', () => updateBorderRadius(input, input.value));
+      });
+
+      copyButton.addEventListener("click", async () => {
+        try {
+          await navigator.clipboard.writeText(radiusShowText.textContent);
+          alert("复制成功！");
+        } catch (err) {
+          console.error('复制失败:', err);
+          alert("复制失败，请重试");
+        }
+      })
+
+    </script>
+
+</body>
+
+</html>
