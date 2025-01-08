@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Christmas Lights App</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="app-container">
+      <div class="light-container">
+        <div class="light-row" data-row="1">
+          <div class="circle red"></div>
+          <div class="circle yellow"></div>
+          <div class="circle blue"></div>
+          <div class="circle green"></div>
+          <div class="circle red"></div>
+          <div class="circle yellow"></div>
+          <div class="circle blue"></div>
+          <div class="circle green"></div>
+        </div>
+      </div>
+      <h1 class="title">Christmas Lights</h1>
+      <div class="controls">
+        <div class="control-group">
+          <label class="label" for="start-button">Switch:</label>
+          <button id="start-button" class="control-button">Start</button>
+        </div>
+        <div class="control-group">
+          <label class="label" for="interval-input">Interval:</label>
+          <input id="interval-input" type="number" value="1000" min="0" />
+          <span class="label">ms</span>
+        </div>
+        <div class="control-group">
+          <label class="label" for="intensity-input">Intensity:</label>
+          <input id="intensity-input" type="number" value="10" min="0" />
+        </div>
+        <div class="control-group">
+          <label class="label">Size:</label>
+          <!-- 为每个灯泡添加大小控制 -->
+          <input
+            class="size-input"
+            type="number"
+            value="50"
+            min="20"
+            max="100"
+          />
+          <input
+            class="size-input"
+            type="number"
+            value="50"
+            min="20"
+            max="100"
+          />
+          <input
+            class="size-input"
+            type="number"
+            value="50"
+            min="20"
+            max="100"
+          />
+          <input
+            class="size-input"
+            type="number"
+            value="50"
+            min="20"
+            max="100"
+          />
+          <input
+            class="size-input"
+            type="number"
+            value="50"
+            min="20"
+            max="100"
+          />
+          <input
+            class="size-input"
+            type="number"
+            value="50"
+            min="20"
+            max="100"
+          />
+          <input
+            class="size-input"
+            type="number"
+            value="50"
+            min="20"
+            max="100"
+          />
+          <input
+            class="size-input"
+            type="number"
+            value="50"
+            min="20"
+            max="100"
+          />
+        </div>
+        <div class="control-group">
+          <label class="label" for="rows-input">Rows:</label>
+          <input id="rows-input" type="number" value="1" min="1" />
+        </div>
+      </div>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
