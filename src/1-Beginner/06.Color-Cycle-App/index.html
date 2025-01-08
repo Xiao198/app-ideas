@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        background-color: #1e3744;
+      }
+      .container {
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+      }
+      .color-show {
+        width: 200px;
+        height: 200px;
+        background-color: #000;
+        border-radius: 20px;
+        margin-bottom: 20px;
+      }
+      .color-control-item {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+        margin-bottom: 10px;
+      }
+      label {
+        color: white;
+        font-size: 16px;
+        font-weight: normal;
+        width: 150px;
+      }
+      input {
+        margin-right: 50px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="color-show"></div>
+      <div class="color-control">
+        <div class="color-control-item">
+          <label for="initial-color">initial color(RGB):</label>
+          <input type="text" id="initial-color" value="000000" />
+        </div>
+        <div class="color-control-item">
+          <label for="R-increment">R increment:</label>
+          <input type="number" id="R-increment" value="10" />
+          <label for="G-increment">G increment:</label>
+          <input type="number" id="G-increment" value="10" />
+          <label for="B-increment">B increment:</label>
+          <input type="number" id="B-increment" value="10" />
+        </div>
+        <div class="color-control-item">
+          <label for="time-interval">time interval:</label>
+          <input type="number" id="time-interval" value="1000" />
+          <label>ms</label>
+        </div>
+        <div class="color-control-item">
+          <label for="start-btn">Switch:</label>
+          <button id="start-btn">Start</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      class ColorCycle {
+        constructor() {
+          this.currentColor = "000000";
+          this.isRunning = false;
+          this.timer = null;
+
+          this.initState();
+          this.bindEvents();
+        }
+
+        // 静态工具方法
+        static colorUtils = {
+          validate(color) {
+            return /^[0-9A-Fa-f]{6}$/.test(color);
+          },
+
+          calculateNewColor(hex, rInc, gInc, bInc) {
+            let R = parseInt(hex.slice(0, 2), 16);
+            let G = parseInt(hex.slice(2, 4), 16);
+            let B = parseInt(hex.slice(4, 6), 16);
+            R += rInc;
+            G += gInc;
+            B += bInc;
+            if (R > 255) {
+              R = 0;
+            }
+            if (G > 255) {
+              G = 0;
+            }
+            if (B > 255) {
+              B = 0;
+            }
+            console.log(R, G, B);
+
+            return `${R.toString(16).padStart(2, "0")}${G.toString(16).padStart(
+              2,
+              "0"
+            )}${B.toString(16).padStart(2, "0")}`;
+          },
+        };
+
+        // UI 相关方法
+        uiControls = {
+          toggleInputs: (disabled) => {
+            this.initialColor.disabled = disabled;
+            this.RIncrement.disabled = disabled;
+            this.GIncrement.disabled = disabled;
+            this.BIncrement.disabled = disabled;
+            this.timeInterval.disabled = disabled;
+          },
+
+          updateColorDisplay: (color) => {
+            this.colorShow.style.backgroundColor = "#" + color;
+          },
+        };
+
+        // 初始化相关
+        initState() {
+          this.colorShow = document.querySelector(".color-show");
+          this.initialColor = document.getElementById("initial-color");
+          this.RIncrement = document.getElementById("R-increment");
+          this.GIncrement = document.getElementById("G-increment");
+          this.BIncrement = document.getElementById("B-increment");
+          this.timeInterval = document.getElementById("time-interval");
+          this.startBtn = document.getElementById("start-btn");
+        }
+
+        // 事件处理相关
+        bindEvents() {
+          this.startBtn.addEventListener(
+            "click",
+            this.handleStartStop.bind(this)
+          );
+        }
+
+        handleStartStop() {
+          if (this.startBtn.textContent === "Start") {
+            this.startColorCycle();
+          } else {
+            this.stopColorCycle();
+          }
+        }
+
+        // 颜色循环控制
+        startColorCycle() {
+          if (!ColorCycle.colorUtils.validate(this.initialColor.value)) {
+            alert("请输入有效的六位十六进制颜色值！");
+            return;
+          }
+
+          this.startBtn.textContent = "Stop";
+          this.uiControls.toggleInputs(true);
+          this.startTimer();
+        }
+
+        stopColorCycle() {
+          this.startBtn.textContent = "Start";
+          this.uiControls.toggleInputs(false);
+          clearInterval(this.timer);
+        }
+
+        startTimer() {
+          this.currentColor = this.initialColor.value;
+          this.uiControls.updateColorDisplay(this.currentColor);
+
+          this.timer = setInterval(() => {
+            // 获取增量值
+            const rInc = parseInt(this.RIncrement.value);
+            const gInc = parseInt(this.GIncrement.value);
+            const bInc = parseInt(this.BIncrement.value);
+
+            // 计算新颜色
+            this.currentColor = ColorCycle.colorUtils.calculateNewColor(
+              this.currentColor,
+              rInc,
+              gInc,
+              bInc
+            );
+
+            // 更新显示
+            this.uiControls.updateColorDisplay(this.currentColor);
+          }, parseInt(this.timeInterval.value));
+        }
+      }
+
+      new ColorCycle();
+    </script>
+  </body>
+</html>
